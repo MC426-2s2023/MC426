@@ -1,5 +1,6 @@
 # Repositório para o projeto de MC426
-* O objetivo principal é construir uma solução de software em segurança pública.
+* Na atualidade, diversos problemas no âmbito de segurança pública aparecem em aberto na sociedade.
+Nesse contexto, nosso projeto visa a solução de um desses problemas, sendo o principal objetivo construir uma solução de software que use as práticas ensinadas na disciplina.
 
 ## Alunos:
 * Bruno Sussel Mendes Cunha Bastos - 246992
