@@ -1,13 +1,19 @@
 FROM python:3.8
 
-WORKDIR /usr/src/app
+ENV PYTHONUNBUFFERED 1
 
-COPY ../requirements.txt .
+RUN mkdir /projeto_mc426
 
-RUN pip install --no-cache-dir -r requirements.txt
+WORKDIR /projeto_mc426
 
-COPY .. .
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends gcc libpq-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-ENV DJANGO_SETTINGS_MODULE projeto_mc426.projeto_mc426.settings
+COPY ../projeto_mc426/requirements.txt /projeto_mc426/
 
-CMD ["gunicorn", "projeto_mc426.projeto_mc426.wsgi:application", "--bind", "0.0.0.0:8000"]
+RUN pip install --upgrade pip \
+    && pip install -r requirements.txt
+
+COPY ../projeto_mc426/ /projeto_mc426/
