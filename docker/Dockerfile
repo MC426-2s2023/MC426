@@ -17,3 +17,7 @@ RUN pip install --upgrade pip \
     && pip install -r requirements.txt
 
 COPY ../projeto_mc426/ /projeto_mc426/
+
+RUN python manage.py collectstatic --noinput
+
+RUN mkdir -p /projeto_mc426/staticfiles
