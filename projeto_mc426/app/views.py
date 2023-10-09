@@ -5,6 +5,14 @@ from django.contrib.auth import authenticate, login, logout
 
 from .forms import CreateUserForm
 
+# Create your views here.
+
+def homePage(request):
+    if request.user.is_authenticated:
+        return render(request, 'home/home.html')
+    else:
+        return redirect('../auth/login/')
+
 def registerPage(request):
     form = CreateUserForm()
 
@@ -34,5 +42,3 @@ def loginPage(request):
 
     return render(request, 'users/login.html')
     
-def homePage(request):
-    return render(request, 'users/home.html')        
