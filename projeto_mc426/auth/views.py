@@ -7,12 +7,6 @@ from .forms import CreateUserForm
 
 # Create your views here.
 
-def homePage(request):
-    if request.user.is_authenticated:
-        return render(request, 'home/home.html')
-    else:
-        return redirect('../auth/login/')
-
 def registerPage(request):
     form = CreateUserForm()
 
@@ -25,7 +19,7 @@ def registerPage(request):
             return redirect('login')
 
     context = {'form':form}
-    return render(request, 'users/register.html', context)
+    return render(request, 'register.html', context)
 
 def loginPage(request):
     if request.method == 'POST':
@@ -38,7 +32,7 @@ def loginPage(request):
             return redirect('home')
         else:
             messages.info(request, 'Usuário ou senha está incorreto.')
-            return render(request, 'users/login.html')
+            return render(request, 'login.html')
 
-    return render(request, 'users/login.html')
+    return render(request, 'login.html')
     
