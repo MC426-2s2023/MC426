@@ -19,7 +19,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Build Docker image
-      run: docker build ./docker -t projeto_mc426
+      run: docker build -f docker/Dockerfile .. -t projeto_mc426
 
     - name: Run Django Tests inside Docker
       run: docker run projeto_mc426 python manage.py test
