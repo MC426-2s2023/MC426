@@ -1,0 +1,25 @@
+name: Django CI
+
+on:
+  push:
+    branches:
+    - main
+    - develop
+  pull_request:
+    branches:
+    - main
+    - develop
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      run: docker build ./docker -t projeto_mc426
+
+    - name: Run Django Tests inside Docker
+      run: docker run projeto_mc426 python manage.py test
