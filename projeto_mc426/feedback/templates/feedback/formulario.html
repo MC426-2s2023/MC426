@@ -1,4 +1,4 @@
-<form action="{% url 'feedback:index' %}" method="post">
+<form action="{% url 'feedback:feedback' %}" method="post">
   {% csrf_token %}
   {{ form.as_p }}
   <input type="submit" value="Enviar" />
