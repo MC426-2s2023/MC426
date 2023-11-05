@@ -36,7 +36,10 @@ class FeedbackCreationTest(TestCase):
         Verifica se o usuário consegue criar um feedback.
         """
         User = get_user_model()
-        user = User.objects.create_user("nome_usuario", "email@a.com", "senha")  
-        forms.Feedback.create(user = user, pub_date = timezone.now(), answer = "", 
+        user = User.objects.create_user("nome_usuario", "email@a.com", "senha")
+        feedback = forms.Feedback.create(user = user, pub_date = timezone.now(), answer = "", 
                                         title = "titulo_teste", description = "teste_feedback",)
+        form = forms.FeedbackForm(instance=feedback)
+        if form.is_valid():
+           form.save()
         self.assertEqual(forms.Feedback.objects.count(), 1)
