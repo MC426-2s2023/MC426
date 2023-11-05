@@ -37,6 +37,6 @@ class FeedbackCreationTest(TestCase):
         """
         User = get_user_model()
         user = User.objects.create_user("nome_usuario", "email@a.com", "senha")  
-        forms.Feedback.objects.Feedback(user = user, pub_date = timezone.now(), answer = "", 
+        forms.Feedback.create(user = user, pub_date = timezone.now(), answer = "", 
                                         title = "titulo_teste", description = "teste_feedback",)
         self.assertEqual(forms.Feedback.objects.count(), 1)

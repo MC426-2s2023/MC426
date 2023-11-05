@@ -10,3 +10,9 @@ class Feedback(models.Model):
     description = models.TextField("Descrição")
     pub_date = models.DateTimeField("Data de publicação")
     answer = models.TextField("Resposta")
+     
+    @classmethod
+    def create(cls, user, title, description, pub_date, answer):
+        feedback = cls(user=user, title=title, description=description,
+                   pub_date=pub_date, answer=answer)
+        return feedback
