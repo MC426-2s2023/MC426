@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=80, verbose_name='Título')),
                 ('description', models.TextField(verbose_name='Descrição')),
-                ('pub_date', models.DateField(verbose_name='Data de publicação')),
+                ('pub_date', models.DateTimeField(verbose_name='Data de publicação')),
                 ('answer', models.TextField(verbose_name='Resposta')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
