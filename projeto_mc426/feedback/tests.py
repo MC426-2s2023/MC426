@@ -1,4 +1,4 @@
-from time import timezone
+from django.utils import timezone
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
