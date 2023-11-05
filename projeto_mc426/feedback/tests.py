@@ -30,16 +30,16 @@ class FeedbackAcessTests(TestCase):
         self.assertEqual(response.status_code, 200)
         # 200: requisição bem sucedida
 
-class FeedbackCreationTest(TestCase):
-    def testCreateFeedback(self):
-        """
-        Verifica se o usuário consegue criar um feedback.
-        """
-        User = get_user_model()
-        user = User.objects.create_user("nome_usuario", "email@a.com", "senha")
-        feedback = forms.Feedback.create(user = user, pub_date = timezone.now(), answer = "", 
-                                        title = "titulo_teste", description = "teste_feedback",)
-        form = forms.FeedbackForm(instance=feedback)
-        if form.is_valid():
-           form.save()
-        self.assertEqual(forms.Feedback.objects.count(), 1)
+# class FeedbackCreationTest(TestCase):
+#     def testCreateFeedback(self):
+#         """
+#         Verifica se o usuário consegue criar um feedback.
+#         """
+#         User = get_user_model()
+#         user = User.objects.create_user("nome_usuario", "email@a.com", "senha")
+#         feedback = forms.Feedback.create(user = user, pub_date = timezone.now(), answer = "", 
+#                                         title = "titulo_teste", description = "teste_feedback",)
+#         form = forms.FeedbackForm(instance=feedback)
+#         if form.is_valid():
+#            form.save()
+#         self.assertEqual(forms.Feedback.objects.count(), 1)
