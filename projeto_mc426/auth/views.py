@@ -1,8 +1,8 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-
 from .forms import CreateUserForm
 
 # Create your views here.
@@ -37,4 +37,5 @@ def loginPage(request):
     return render(request, 'login.html')
     
 def logoutPage(request):
-    pass
+    logout(request)
+    return HttpResponseRedirect('/auth/login')
