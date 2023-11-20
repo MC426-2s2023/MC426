@@ -1,1 +1,11 @@
 <h1>Home Page</h1>
+
+<!--Redireciona para um feedback geral-->
+<p><a href="{% url 'feedback:feedback' %}">Deixe aqui o seu feedback</a></p>
+
+<!--Redireciona para a pagina de admin caso verifique superusuario-->
+{% if request.user.is_superuser %} 
+    <p><a href="/admin">Acesse a página como um administrador</a></p>
+{% endif %}
+
+<p><a href="/auth/logout">Sair</a></p>

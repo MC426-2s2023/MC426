@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'auth',
     'home',
+    'feedback.apps.FeedbackConfig',
 ]
 
 MIDDLEWARE = [
