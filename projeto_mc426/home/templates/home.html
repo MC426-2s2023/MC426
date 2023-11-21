@@ -3,7 +3,17 @@
 {% load static %}
 
 <!--Redireciona para um feedback geral-->
+
+{% if request.user.is_authenticated %} 
 <p><a href="{% url 'feedback:feedback' %}">Deixe aqui o seu feedback</a></p>
+
+<p><a href="/auth/logout">Sair</a></p>
+
+{% else %}
+
+<p><a href="/auth/login">Entrar</a></p>
+
+{% endif %}
 
 <!--Redireciona para a pagina de admin caso verifique superusuario-->
 {% if request.user.is_superuser %} 
