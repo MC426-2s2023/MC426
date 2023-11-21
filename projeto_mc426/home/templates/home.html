@@ -1,5 +1,7 @@
 <h1>Home Page</h1>
 
+{% load static %}
+
 <!--Redireciona para um feedback geral-->
 <p><a href="{% url 'feedback:feedback' %}">Deixe aqui o seu feedback</a></p>
 
@@ -7,5 +9,72 @@
 {% if request.user.is_superuser %} 
     <p><a href="/admin">Acesse a página como um administrador</a></p>
 {% endif %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa de Calor do Crime</title>
+    <!-- Include Leaflet.js -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- Include Heatmap.js -->
+    <script src="{% static 'projeto_mc426/js/heatmap.js' %}"></script>
+    <script src="{% static 'projeto_mc426/js/leaflet-heatmap.js' %}"></script>
+
+</head>
+<body>
+    <div id="map" style="height: 500px;"></div>
+
+    <script>
+        // Dados de exemplo
+        var data = {
+            max: 18,
+            min: 0,
+            data: [{lat:-22.820743, lng:-47.073155, count: 12},{lat:-22.822292, lng: -47.072645, count: 2}, {lat:-22.822509, lng:-47.075316, count:8}, {lat:-22.823666, lng:-47.069469, count:7}, {lat:-22.826593, lng:-47.069512, count:18}, {lat: -22.822308, lng: -47.067684, count: 13}]
+        };
+
+        // Camada base
+        var baseLayer = L.tileLayer(
+          'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+            maxZoom: 18
+          }
+        );
+
+        var cfg = {
+            "radius": 0.0005,
+            "maxOpacity": .8,
+            "minOpacity": 0, 
+            // scales the radius based on map zoom
+            "scaleRadius": true, 
+            // if set to false the heatmap uses the global maximum for colorization
+            // if activated: uses the data maximum within the current map boundaries 
+            //   (there will always be a red spot with useLocalExtremas true)
+            "useLocalExtrema": false,
+            // which field name in your data represents the latitude - default "lat"
+            latField: 'lat',
+            // which field name in your data represents the longitude - default "lng"
+            lngField: 'lng',
+            // which field name in your data represents the data value - default "value"
+            valueField: 'count'
+          };
+
+        var heatmapLayer = new HeatmapOverlay(cfg)
+
+        // Configuração do mapa
+        var map = new L.Map('map', {
+            center: new L.LatLng(-22.817168, -47.069791),
+            zoom: 15,
+            layers: [baseLayer, heatmapLayer]
+          });
+
+        heatmapLayer.setData(data);
+
+        layer = heatmapLayer;
+    </script>
+</body>
+</html>
 
 <p><a href="/auth/logout">Sair</a></p>
