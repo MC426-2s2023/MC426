@@ -18,5 +18,7 @@ class registro_de_ocorrencia(models.Model):
     rdo_cidade = models.CharField("Cidade", max_length=50)
     rdo_estado = models.CharField("Estado", max_length=50)
     rdo_numero = models.IntegerField("Número")
+    rdo_lat = models.DecimalField("Latitude", max_digits=10, decimal_places=6)
+    rdo_lng = models.DecimalField("Longitute", max_digits=10, decimal_places=6)
     rdo_dtocorrencia = models.DateField("Data da Ocorrência")
     rdo_hrocorrencia = models.TimeField("Hora da Ocorrência")
