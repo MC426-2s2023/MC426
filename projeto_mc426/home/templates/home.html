@@ -33,6 +33,13 @@
     <script src="{% static 'projeto_mc426/js/heatmap.js' %}"></script>
     <script src="{% static 'projeto_mc426/js/leaflet-heatmap.js' %}"></script>
 
+    <!-- Include Leaflet Routing Machine  -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+    <!-- Leaflet Routing Machine - OpenRoute Service -->
+    <script src="https://unpkg.com/@gegeweb/leaflet-routing-machine-openroute@latest/dist/leaflet-routing-openroute.js"></script>
+
 </head>
 <body>
     <div id="map" style="height: 500px;"></div>
@@ -86,6 +93,47 @@
         heatmapLayer.setData(data);
 
         layer = heatmapLayer;
+
+        // ROUTING
+        // the plugin allow to setting the requesting format
+        // but at this time, gpx doesn't works.
+        const apikey = "";
+        const osrRouter = new L.Routing.OpenRouteService(apikey, {
+                "timeout": 30 * 1000, // 30",
+                "format": "json",                           // default, gpx not yet supported
+                "host": "https://api.openrouteservice.org", // default if not setting
+                "service": "directions",                    // default (for routing) 
+                "api_version": "v2",                        // default
+                "profile": "cycling-road",                  // default
+                "routingQueryParams": {
+                    "attributes": [
+                        "avgspeed",
+                        "percentage"
+                    ],
+                    "language": "pt-pt",
+                    "maneuvers": "true",
+                    "preference": "recommended",
+                  "options": {
+                      "avoid_polygons": {
+                          "type": "Polygon",
+                          "coordinates": [
+                              [ [-47.073229871719874, -22.820486692081708], [-47.073405490196656, -22.82069577641742], [-47.07297376144123 , -22.82071938269322], [-47.073185967100684, -22.820935211310758], [-47.073229871719874, -22.820486692081708]]
+                              // colocar o quinto ponto
+                         ]}
+                    }
+                }
+        });
+
+// [ [-47.073229871719874, -22.820486692081708], [-47.073405490196656, -22.82069577641742], [-47.07297376144123 , -22.82071938269322], [-47.073185967100684, -22.820935211310758] ]
+
+// [ [-22.820486692081708,  -47.073229871719874], [-22.82069577641742, -47.073405490196656 ], [-22.82071938269322,  -47.07297376144123], [-22.820935211310758,  -47.073185967100684] ]
+        L.Routing.control({
+            router: osrRouter,
+            waypoints: [
+                L.latLng(-22.8198, -47.072),
+                L.latLng(-22.821612, -47.074)
+            ]
+        }).addTo(map);
     </script>
 </body>
 </html>
