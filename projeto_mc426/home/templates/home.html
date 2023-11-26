@@ -15,6 +15,7 @@
 
 {% endif %}
 
+
 <!--Redireciona para a pagina de admin caso verifique superusuario-->
 {% if request.user.is_superuser %} 
     <p><a href="/admin">Acesse a página como um administrador</a></p>
