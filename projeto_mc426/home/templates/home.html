@@ -95,8 +95,35 @@
         layer = heatmapLayer;
 
         // ROUTING
-        // the plugin allow to setting the requesting format
-        // but at this time, gpx doesn't works.
+
+        function getPolygons(data, L){
+            var list = [];
+            var dist = 0.00015;
+            var ocurr = data.data;
+            for (const i in ocurr){
+                var pol = [];
+                L.marker([ocurr[i].lat, ocurr[i].lng]).addTo(map);
+
+                pol.push([ocurr[i].lng - dist, ocurr[i].lat - dist]);
+                L.marker([ocurr[i].lat + dist, ocurr[i].lng - dist]).addTo(map);
+
+                pol.push([ocurr[i].lng - dist, ocurr[i].lat + dist]);
+                L.marker([ocurr[i].lat - dist, ocurr[i].lng - dist]).addTo(map);
+
+                pol.push([ocurr[i].lng + dist, ocurr[i].lat + dist]);
+                L.marker([ocurr[i].lat - dist, ocurr[i].lng + dist]).addTo(map);
+
+                pol.push([ocurr[i].lng + dist, ocurr[i].lat - dist]);
+                L.marker([ocurr[i].lat + dist, ocurr[i].lng + dist]).addTo(map);
+
+                pol.push([ocurr[i].lng - dist, ocurr[i].lat - dist]);
+                L.marker([ocurr[i].lat + dist, ocurr[i].lng - dist]).addTo(map);
+                list.push([pol]);
+            }
+            return list;
+        }
+
+
         const apikey = "";
         const osrRouter = new L.Routing.OpenRouteService(apikey, {
                 "timeout": 30 * 1000, // 30",
@@ -115,23 +142,18 @@
                     "preference": "recommended",
                   "options": {
                       "avoid_polygons": {
-                          "type": "Polygon",
-                          "coordinates": [
-                              [ [-47.073229871719874, -22.820486692081708], [-47.073405490196656, -22.82069577641742], [-47.07297376144123 , -22.82071938269322], [-47.073185967100684, -22.820935211310758], [-47.073229871719874, -22.820486692081708]]
-                              // colocar o quinto ponto
-                         ]}
+                          "type": "MultiPolygon",
+                          "coordinates": getPolygons(data, L)
+                         }
                     }
                 }
         });
 
-// [ [-47.073229871719874, -22.820486692081708], [-47.073405490196656, -22.82069577641742], [-47.07297376144123 , -22.82071938269322], [-47.073185967100684, -22.820935211310758] ]
-
-// [ [-22.820486692081708,  -47.073229871719874], [-22.82069577641742, -47.073405490196656 ], [-22.82071938269322,  -47.07297376144123], [-22.820935211310758,  -47.073185967100684] ]
         L.Routing.control({
             router: osrRouter,
             waypoints: [
-                L.latLng(-22.8198, -47.072),
-                L.latLng(-22.821612, -47.074)
+                L.latLng(-22.82578415192047, -47.072228935407814),
+                L.latLng(-22.82384289829194, -47.07019292913905)
             ]
         }).addTo(map);
     </script>
