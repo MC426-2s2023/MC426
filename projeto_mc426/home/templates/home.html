@@ -33,6 +33,13 @@
     <script src="{% static 'projeto_mc426/js/heatmap.js' %}"></script>
     <script src="{% static 'projeto_mc426/js/leaflet-heatmap.js' %}"></script>
 
+    <!-- Include Leaflet Routing Machine  -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+    <!-- Leaflet Routing Machine - OpenRoute Service -->
+    <script src="https://unpkg.com/@gegeweb/leaflet-routing-machine-openroute@latest/dist/leaflet-routing-openroute.js"></script>
+
 </head>
 <body>
     <div id="map" style="height: 500px;"></div>
@@ -86,6 +93,69 @@
         heatmapLayer.setData(data);
 
         layer = heatmapLayer;
+
+        // ROUTING
+
+        function getPolygons(data, L){
+            var list = [];
+            var dist = 0.00015;
+            var ocurr = data.data;
+            for (const i in ocurr){
+                var pol = [];
+                L.marker([ocurr[i].lat, ocurr[i].lng]).addTo(map);
+
+                pol.push([ocurr[i].lng - dist, ocurr[i].lat - dist]);
+                L.marker([ocurr[i].lat + dist, ocurr[i].lng - dist]).addTo(map);
+
+                pol.push([ocurr[i].lng - dist, ocurr[i].lat + dist]);
+                L.marker([ocurr[i].lat - dist, ocurr[i].lng - dist]).addTo(map);
+
+                pol.push([ocurr[i].lng + dist, ocurr[i].lat + dist]);
+                L.marker([ocurr[i].lat - dist, ocurr[i].lng + dist]).addTo(map);
+
+                pol.push([ocurr[i].lng + dist, ocurr[i].lat - dist]);
+                L.marker([ocurr[i].lat + dist, ocurr[i].lng + dist]).addTo(map);
+
+                pol.push([ocurr[i].lng - dist, ocurr[i].lat - dist]);
+                L.marker([ocurr[i].lat + dist, ocurr[i].lng - dist]).addTo(map);
+                list.push([pol]);
+            }
+            return list;
+        }
+
+
+        const apikey = "";
+        const osrRouter = new L.Routing.OpenRouteService(apikey, {
+                "timeout": 30 * 1000, // 30",
+                "format": "json",                           // default, gpx not yet supported
+                "host": "https://api.openrouteservice.org", // default if not setting
+                "service": "directions",                    // default (for routing) 
+                "api_version": "v2",                        // default
+                "profile": "cycling-road",                  // default
+                "routingQueryParams": {
+                    "attributes": [
+                        "avgspeed",
+                        "percentage"
+                    ],
+                    "language": "pt-pt",
+                    "maneuvers": "true",
+                    "preference": "recommended",
+                  "options": {
+                      "avoid_polygons": {
+                          "type": "MultiPolygon",
+                          "coordinates": getPolygons(data, L)
+                         }
+                    }
+                }
+        });
+
+        L.Routing.control({
+            router: osrRouter,
+            waypoints: [
+                L.latLng(-22.82578415192047, -47.072228935407814),
+                L.latLng(-22.82384289829194, -47.07019292913905)
+            ]
+        }).addTo(map);
     </script>
 </body>
 </html>
