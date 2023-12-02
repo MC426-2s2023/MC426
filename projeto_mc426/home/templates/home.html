@@ -36,13 +36,16 @@
 </head>
 <body>
     <div id="map" style="height: 500px;"></div>
-
+    
     <script>
-        // Dados de exemplo
         var data = {
-            max: 18,
+            max: 10,
             min: 0,
-            data: [{lat:-22.820743, lng:-47.073155, count: 12},{lat:-22.822292, lng: -47.072645, count: 2}, {lat:-22.822509, lng:-47.075316, count:8}, {lat:-22.823666, lng:-47.069469, count:7}, {lat:-22.826593, lng:-47.069512, count:18}, {lat: -22.822308, lng: -47.067684, count: 13}]
+            data: [
+              {%for registro in data%}
+                {lat: {{ registro.rdo_lat|stringformat:"f" }}, lng: {{ registro.rdo_lng|stringformat:"f" }}, count: {{ registro.rdo_tdo.tdo_peso }}},
+              {%endfor%}
+            ]
         };
 
         // Camada base
@@ -86,5 +89,3 @@
     </script>
 </body>
 </html>
-
-<p><a href="/auth/logout">Sair</a></p>
