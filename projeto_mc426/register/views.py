@@ -1,12 +1,14 @@
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 from register.forms import registro_de_ocorrenciaForm
 from decimal import Decimal
 from home.models import *
 
 # Create your views here.
 
+@login_required
 def crimeRegisterPage(request):
     if request.method == 'POST':
         registro = registro_de_ocorrencia(
