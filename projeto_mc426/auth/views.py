@@ -29,7 +29,10 @@ def loginPage(request):
 
         if user is not None:
             login(request, user)
-            return redirect(request.POST.get('next', 'home'))
+            redirect_page = request.POST.get('next', 'home')
+            if redirect_page == "":
+                redirect_page = 'home'
+            return redirect(redirect_page)
         else:
             messages.info(request, 'Usuário ou senha está incorreto.')
             return render(request, 'login.html')
