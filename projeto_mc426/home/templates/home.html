@@ -1,7 +1,7 @@
 <h1>Home Page</h1>
 
 {% load static %}
-
+{% load webpush_notifications %}
 <!--Redireciona para um feedback geral-->
 
 {% if request.user.is_authenticated %} 
@@ -39,11 +39,12 @@
 
     <!-- Leaflet Routing Machine - OpenRoute Service -->
     <script src="https://unpkg.com/@gegeweb/leaflet-routing-machine-openroute@latest/dist/leaflet-routing-openroute.js"></script>
-
+ {% webpush_header %}
 </head>
 <body>
+
+    {% webpush_button %}
     <div id="map" style="height: 500px;"></div>
-    
     <script>
         var data = {
             max: 10,
