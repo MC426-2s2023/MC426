@@ -5,12 +5,32 @@ from django.contrib.auth.decorators import login_required
 from register.forms import registro_de_ocorrenciaForm
 from decimal import Decimal
 from home.models import *
-
+import requests
 # Create your views here.
 
 @login_required
 def crimeRegisterPage(request):
     if request.method == 'POST':
+        rdo_rua = request.POST.get("rdo_rua")
+        rdo_bairro = request.POST.get("rdo_bairro")
+        rdo_cidade = request.POST.get("rdo_cidade")
+        rdo_estado = request.POST.get("rdo_estado")
+        rdo_numero = request.POST.get("rdo_numero")
+        
+        #consulta a API do openstreetmap para pegar a latitutde e longitude
+        query = f'{rdo_rua}+{rdo_bairro}+{rdo_cidade}+{rdo_estado}+{rdo_numero}'
+
+        params = {
+            'format': 'json',
+            'q': query
+        }
+        response = requests.get('https://nominatim.openstreetmap.org/search', params=params)
+
+        if response.status_code == 200:
+            data = response.json()
+            lat = data[0]['lat']
+            lng = data[0]['lon']
+
         registro = registro_de_ocorrencia(
             # rdo_id = 42,
             rdo_tdo = tipo_de_ocorrencia(
@@ -24,8 +44,8 @@ def crimeRegisterPage(request):
             rdo_cidade = request.POST.get("rdo_cidade"),
             rdo_estado = request.POST.get("rdo_estado"),
             rdo_numero = request.POST.get("rdo_numero"),
-            rdo_lat = 123.0,
-            rdo_lng = 79,
+            rdo_lat = lat,
+            rdo_lng = lng,
             rdo_dtocorrencia =  timezone.now().date(),
             rdo_hrocorrencia = timezone.now().time(),
         )
