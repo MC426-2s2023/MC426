@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Inclusão do jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Inclusão do jQuery Mask Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <title>Registro de Ocorrência</title>
 </head>
 
@@ -13,9 +18,44 @@
     <form action="{% url 'crime_register' %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
+        <!--<input type="button" value="Voltar" href="{% url "home" %}"> -->
         <input type="submit" value="Enviar" />
-    </form>
-   
+      </form>      
+    <script>
+        $('#id_rdo_cep').parent().append('<span id="loading" style="display: none;">Buscando...</span>');
 
+        $(document).ready(function(){
+            $('#id_rdo_cep').mask('00000-000'); //aplica mascara de CPF no campo
+  
+            $('#id_rdo_cep').mask('00000-000').on('blur', function(){ //faz a busca por CPF e preenche os campos
+                var cep = $(this).val().replace(/\D/g, '');
+                if (cep.length === 8) {
+
+                    $('#loading').show();
+                    $.ajax({
+                        url: 'https://viacep.com.br/ws/' + cep + '/json/',
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function(data){
+                            if (!("erro" in data)) {
+                                $('#id_rdo_rua').val(data.logradouro).prop( "readonly", true );
+                                $('#id_rdo_bairro').val(data.bairro).prop( "readonly", true );
+                                $('#id_rdo_cidade').val(data.localidade).prop( "readonly", true );
+                                $('#id_rdo_estado').val(data.uf).prop( "readonly", true );
+                                $('#loading').hide();
+                            } else {
+                                // CEP não encontrado ou erro na requisição
+                                $('#id_rdo_rua').val("").prop( "readonly", false );
+                                $('#id_rdo_bairro').val("").prop( "readonly", false );
+                                $('#id_rdo_cidade').val("").prop( "readonly", false );
+                                $('#id_rdo_estado').val("").prop( "readonly", false );
+                                $('#loading').hide();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
