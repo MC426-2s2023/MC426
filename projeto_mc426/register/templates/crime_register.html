@@ -10,64 +10,12 @@
 
     <h2>Registro de Ocorrência</h2>
 	<p>Preencha os seguintes campos para registrar a sua ocorrência.</p>
-    <form  method="post">
+    <form action="{% url 'crime_register' %}" method="post">
         {% csrf_token %}
-        <!-- Campo do CEP -->
-        <label for="rdo_cep">CEP:</label>
-        <input type="text" id="rdo_cep" name="rdo_cep" required>
-		<br><br>
-        
-        <!-- Campo da rua -->
-        <label for="rdo_rua">Rua:</label>
-        <input type="text" id="rdo_rua" name="rdo_rua" required>
-		<br><br>
-        
-        <!-- Campo do Bairro -->
-        <label for="rdo_bairro">Bairro:</label>
-        <input type="text" id="rdo_bairro" name="rdo_bairro" required>
-		<br><br>
-        
-        <!-- Campo da Cidade -->
-        <label for="rdo_cidade">Cidade:</label>
-        <input type="text" id="rdo_cidade" name="rdo_cidade" required>
-		<br><br>
-        
-        <!-- Campo do Estado -->
-        <label for="rdo_estado">Estado:</label>
-        <input type="text" id="rdo_estado" name="rdo_estado" required>
-		<br><br>
-
-        <!-- Campo do Número -->
-        <label for="rdo_numero">Número:</label>
-        <input type="int" id="rdo_numero" name="rdo_numero" required>
-		<br><br>
-        
-        <!-- Caixa de Seleção para Ocorrência -->
-        <label for="rdo_tdo"><b>Tipo de Ocorrência:<b></label>
-        <select id="rdo_tdo" name="rdo_tdo">
-            <option value="1">Desaparecimento</option>
-            <option value="2">Maus tratos aos animais</option>
-            <option value="3">Ameaça ou atividade suspeita</option>
-            <option value="4">Roubo à residência</option>
-            <option value="5">Furto pessoa/veículo</option>
-            <option value="6">Roubo pessoa/veículo</option>
-            <option value="7">Assalto à mão armada</option>
-            <option value="8">Sequestro</option>
-            <option value="9">Estupro</option>
-            <option value="10">Homicídio</option>
-            <option value="11">Outros</option>
-            <!-- Adicionar mais opções conforme necessário -->
-        </select>
-        
-		<br><br>
-        
-        <!-- Botões de Limpar e Enviar -->
-        <button type="reset">Limpar</button>
-        <br><br>
-        <button type="submit">Enviar</button>
-
-
+        {{ form.as_p }}
+        <input type="submit" value="Enviar" />
     </form>
+   
 
 </body>
 </html>
