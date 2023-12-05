@@ -6,6 +6,8 @@ class tipo_de_ocorrencia(models.Model):
     tdo_id = models.BigAutoField(primary_key=True)
     tdo_nome = models.CharField(max_length=255)
     tdo_peso = models.IntegerField()
+    def __str__(self):
+        return self.tdo_nome
 
 class registro_de_ocorrencia(models.Model):
     rdo_id = models.BigAutoField(primary_key=True)
