@@ -5,8 +5,8 @@
 <!--Redireciona para um feedback geral-->
 
 {% if request.user.is_authenticated %} 
+<p><a href="{% url 'crime_register' %}">Registre uma ocorrência</a></p>
 <p><a href="{% url 'feedback:feedback' %}">Deixe aqui o seu feedback</a></p>
-
 <p><a href="/auth/logout">Sair</a></p>
 
 {% else %}
@@ -103,29 +103,29 @@
             var ocurr = data.data;
             for (const i in ocurr){
                 var pol = [];
-                L.marker([ocurr[i].lat, ocurr[i].lng]).addTo(map);
+                //L.marker([ocurr[i].lat, ocurr[i].lng]).addTo(map);
 
                 pol.push([ocurr[i].lng - dist, ocurr[i].lat - dist]);
-                L.marker([ocurr[i].lat + dist, ocurr[i].lng - dist]).addTo(map);
+                //L.marker([ocurr[i].lat + dist, ocurr[i].lng - dist]).addTo(map);
 
                 pol.push([ocurr[i].lng - dist, ocurr[i].lat + dist]);
-                L.marker([ocurr[i].lat - dist, ocurr[i].lng - dist]).addTo(map);
+                //L.marker([ocurr[i].lat - dist, ocurr[i].lng - dist]).addTo(map);
 
                 pol.push([ocurr[i].lng + dist, ocurr[i].lat + dist]);
-                L.marker([ocurr[i].lat - dist, ocurr[i].lng + dist]).addTo(map);
+                //L.marker([ocurr[i].lat - dist, ocurr[i].lng + dist]).addTo(map);
 
                 pol.push([ocurr[i].lng + dist, ocurr[i].lat - dist]);
-                L.marker([ocurr[i].lat + dist, ocurr[i].lng + dist]).addTo(map);
+                //L.marker([ocurr[i].lat + dist, ocurr[i].lng + dist]).addTo(map);
 
                 pol.push([ocurr[i].lng - dist, ocurr[i].lat - dist]);
-                L.marker([ocurr[i].lat + dist, ocurr[i].lng - dist]).addTo(map);
+                //L.marker([ocurr[i].lat + dist, ocurr[i].lng - dist]).addTo(map);
                 list.push([pol]);
             }
             return list;
         }
 
 
-        const apikey = "";
+        const apikey = "5b3ce3597851110001cf62483b054b57335d4a5a8ccfbf5ebdf23f1e";
         const osrRouter = new L.Routing.OpenRouteService(apikey, {
                 "timeout": 30 * 1000, // 30",
                 "format": "json",                           // default, gpx not yet supported
