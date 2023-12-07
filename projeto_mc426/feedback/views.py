@@ -7,7 +7,7 @@ from .forms import FeedbackForm
 from .models import Feedback
 
 # Create your views here.
-@login_required
+@login_required(login_url='/auth/login')
 def index(request):
     if (request.method == 'POST'):
         feedback = Feedback(
