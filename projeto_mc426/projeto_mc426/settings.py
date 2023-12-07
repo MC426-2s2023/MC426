@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'auth',
     'home',
     'feedback.apps.FeedbackConfig',
+    'register',
 ]
 
 MIDDLEWARE = [
