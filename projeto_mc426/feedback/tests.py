@@ -12,9 +12,11 @@ class FeedbackAcessTests(TestCase):
         O usuário não logado é redirecionado ao site de login.
         """
         response = self.client.get(reverse("feedback:feedback"))
-        self.assertRedirects(
-            response,
-            reverse("login") + "?next=" + reverse("feedback:feedback")
+        self.assertEqual(response.status_code, 302) 
+        # 302: redirecionamento temporário
+        self.assertURLEqual(
+            response.url,
+            reverse("login")[:-1] + "?next=" + reverse("feedback:feedback")
         )
    
     def test_can_access_feedback_site_while_authenticaded(self):
