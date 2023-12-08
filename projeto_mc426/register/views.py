@@ -8,58 +8,44 @@ from home.models import *
 import requests
 # Create your views here.
 
+def getLocationData(rua, bairro, cidade, estado, numero):
+    query = f'{rua}+{bairro}+{cidade}+{estado}+{numero}'
+    params = {'format': 'json', 'q': query}
+    response = requests.get('https://nominatim.openstreetmap.org/search', params=params)
+    if response.status_code == 200:
+        data = response.json()
+        if data:
+            return data[0].get('lat'), data[0].get('lon')
+    return None, None
+
 @login_required
 def crimeRegisterPage(request):
     if request.method == 'POST':
-        rdo_rua = request.POST.get("rdo_rua")
-        rdo_bairro = request.POST.get("rdo_bairro")
-        rdo_cidade = request.POST.get("rdo_cidade")
-        rdo_estado = request.POST.get("rdo_estado")
-        rdo_numero = request.POST.get("rdo_numero")
-        
-        #consulta a API do openstreetmap para pegar a latitutde e longitude
-        query = f'{rdo_rua}+{rdo_bairro}+{rdo_cidade}+{rdo_estado}+{rdo_numero}'
+        form = registro_de_ocorrenciaForm(request.POST)
 
-        params = {
-            'format': 'json',
-            'q': query
-        }
-        response = requests.get('https://nominatim.openstreetmap.org/search', params=params)
+        if form.is_valid():
+            registro_de_ocorrencia()
+            cleaned_data = form.cleaned_data
+            lat, lng = getLocationData(
+                cleaned_data.get("rdo_rua"), 
+                cleaned_data.get("rdo_bairro"),
+                cleaned_data.get("rdo_cidade"), 
+                cleaned_data.get("rdo_estado"),
+                cleaned_data.get("rdo_numero")
+            )
 
-        if response.status_code == 200:
-            data = response.json()
-            lat = data[0]['lat']
-            lng = data[0]['lon']
-
-        registro = registro_de_ocorrencia(
-            # rdo_id = 42,
-            rdo_tdo = tipo_de_ocorrencia(
-                #tdo_id = 54,
-                tdo_nome = "Crime",
-                tdo_peso = 10
-            ),
-            rdo_cep = request.POST.get("rdo_cep"),
-            rdo_rua = request.POST.get("rdo_rua"),  
-            rdo_bairro = request.POST.get("rdo_bairro"),
-            rdo_cidade = request.POST.get("rdo_cidade"),
-            rdo_estado = request.POST.get("rdo_estado"),
-            rdo_numero = request.POST.get("rdo_numero"),
-            rdo_lat = lat,
-            rdo_lng = lng,
-            rdo_dtocorrencia =  timezone.now().date(),
-            rdo_hrocorrencia = timezone.now().time(),
-        )
-        # SE QUISER APAGAR TESTES
-        # i = 9
-        # while i >= 4:
-        #     apagar = registro_de_ocorrencia.objects.get(rdo_id = i)
-        #     apagar.delete()
-        #     i -= 1
-        form = registro_de_ocorrenciaForm(request.POST, instance=registro)
-        if form.is_valid(): # SÓ VAI ATÉ O ID 3, POR ENQUANTO (3ª OPÇAO DE CRIME)
-            form.save()
-            return render(request, 'crime_register_agradecimento.html')
-        
+            if lat is not None and lng is not None:
+                registro = form.save(commit=False)
+                registro.rdo_lat = lat
+                registro.rdo_lng = lng
+                registro.rdo_dtocorrencia = timezone.now().date()
+                registro.rdo_hrocorrencia = timezone.now().time()
+                registro.save()
+                return render(request, 'crime_register_agradecimento.html')
+            else:
+                form.add_error(None, 'Local não encontrado.')
+                return render(request, 'crime_register_erro.html', {'form': form})
+        return render(request, 'crime_register.html', {'form': form})
     else:
         form = registro_de_ocorrenciaForm()
     return render(request, 'crime_register.html', {'form': form})
