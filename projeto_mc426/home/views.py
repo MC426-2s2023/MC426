@@ -12,7 +12,7 @@ def homePage(request):
     context = {
         "data": data
     }
-
+     
     return render(request, 'home.html', context)
 
     #if request.user.is_authenticated:
@@ -44,4 +44,12 @@ def crimeRegisterProximity(lat, lng, radius):
             crime_regs.append((reg.id, dist))
 
     return crime_regs.sort(key= lambda vector: vector[1])
+
+def warnUser(request, userPosition):
+    radius = 20
+    regProx = crimeRegisterProximity(userPosition[0], userPosition[1], radius)
+    if regProx: # lista nao existe alguma ocorrencia
+        msg = {"head": "Atencao!", "body": "Existe uma ocorrencia ha " + regProx[0][1] + "metros" }
+        send_user_notification(user=request.user, payload=msg, ttl=1000)
+    return
 

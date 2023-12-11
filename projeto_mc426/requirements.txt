@@ -3,3 +3,4 @@ gunicorn
 whitenoise
 six
 django-webpush
+geopy

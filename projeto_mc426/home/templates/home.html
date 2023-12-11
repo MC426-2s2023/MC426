@@ -157,6 +157,20 @@
                 L.latLng(-22.82384289829194, -47.07019292913905)
             ]
         }).addTo(map);
+ 
+
+        let hijack = true
+        function success(position){
+            console.log(position.coords) 
+            sessionStorage.setItem("user_lat", position.coords.latitude);
+            sessionStorage.setItem("user_lng", position.coords.longitude);
+        }
+
+        function error(position){
+            console.log(error) 
+        }
+    // options -> high acuracy
+    let id = navigator.geolocation.watchPosition(success, error);
     </script>
 </body>
 </html>
