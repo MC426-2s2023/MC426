@@ -1,4 +1,6 @@
 <html>
+    {% extends "base.html" %}
+    {% block content %}
     <head>
 
     </head>
@@ -25,4 +27,5 @@
             Não tem uma conta? <a href="{% url 'register' %}">Registre-se aqui</a>.
         </div>
     </body>
+    {% endblock %}
 </html>
