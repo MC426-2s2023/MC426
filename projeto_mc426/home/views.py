@@ -26,15 +26,15 @@ def homePage(request):
 
 # @ajax_required
 def updateLocation(request):
-    try:
+    # try:
         if request.method == 'POST':
             lat = request.POST.get('lat')
             lng = request.POST.get('lng')
             if request.user.is_authenticated:
                 request.user.location_profile.updateUserLocation(request, lat, lng)
             return redirect('/home')
-    except Exception:   
-        return HttpResponseBadRequest()
+    # except Exception:   
+        # return HttpResponseBadRequest()
 
 
 

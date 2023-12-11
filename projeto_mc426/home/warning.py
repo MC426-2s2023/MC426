@@ -13,9 +13,10 @@ def crimeRegisterProximity(lat, lng, radius):
     for reg in regs:
         dist = getPointsDist(ptA, [reg.rdo_lat, reg.rdo_lng])
         if dist <= radius:
-            crime_regs.append((reg.id, dist))
+            crime_regs.append((reg, dist))
 
-    return crime_regs.sort(key= lambda vector: vector[1])
+    crime_regs.sort(key=lambda v: v[1])
+    return crime_regs
 
 class Warning:
     def setMsg(self, msg_head, msg_body):
@@ -25,10 +26,10 @@ class Warning:
         }
 
     def warnUser(self, request, userPosition):
-        radius = 20
+        radius = 30
         regProx = crimeRegisterProximity(userPosition[0], userPosition[1], radius)
-        if regProx: # lista nao existe alguma ocorrencia
-            self.setMsg("Atencao!",  "Existe uma ocorrencia ha " + regProx[0][1] + "metros" )
+        if regProx: # existe alguma ocorrencia proxima
+            self.setMsg("Atencao!",  "Existe uma ocorrencia ha {x} metros de voce".format(x = regProx[0][1]))
             send_user_notification(user=request.user, payload=self.msg, ttl=1000)
         return
 
