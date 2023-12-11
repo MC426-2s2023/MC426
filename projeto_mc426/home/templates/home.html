@@ -39,6 +39,9 @@
 
     <!-- Leaflet Routing Machine - OpenRoute Service -->
     <script src="https://unpkg.com/@gegeweb/leaflet-routing-machine-openroute@latest/dist/leaflet-routing-openroute.js"></script>
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
  {% webpush_header %}
 </head>
 <body>
@@ -161,9 +164,30 @@
 
         let hijack = true
         function success(position){
-            console.log(position.coords) 
-            sessionStorage.setItem("user_lat", position.coords.latitude);
-            sessionStorage.setItem("user_lng", position.coords.longitude);
+            var lat = position.coords.latitude
+            var lng = position.coords.longitude
+            var csrf = $(this).attr('csrf');
+            $.ajax({
+                    type: "POST",
+                    url: '/home/update_user_location/',
+                    data: {
+                        "lat": lat,
+                        "lng": lng,
+                    },
+                    headers:{
+                        "X-CSRFToken": '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        //alert("successfull")
+                    },
+                    failure: function () {
+                        //alert("failure");
+                    }
+            });
+            console.log(lat);
+            console.log(lng);
+            //sessionStorage.setItem("user_lat", lat);
+            //sessionStorage.setItem("user_lng", lng);
         }
 
         function error(position){
