@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-<h1> Envio de feedback </h1>
-<p> Relate aqui a sua experiência com o site. </p>
 <form action="{% url 'feedback:feedback' %}" method="post">
   {% csrf_token %}
   {{ form.as_p }}
