@@ -7,6 +7,7 @@
 {% if request.user.is_authenticated %} 
 <p><a href="{% url 'crime_register' %}">Registre uma ocorrência</a></p>
 <p><a href="{% url 'feedback:feedback' %}">Deixe aqui o seu feedback</a></p>
+{% endif %}
 
 {% if request.user.is_authenticated %} 
 <p><a href="/auth/logout">Sair</a></p>
