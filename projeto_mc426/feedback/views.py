@@ -15,7 +15,6 @@ def index(request):
             user = request.user,
             pub_date = timezone.now(),
             answer = "",
-            notify = False,
         )
         form = FeedbackForm(request.POST, instance=feedback)
         if form.is_valid():
@@ -39,7 +38,6 @@ def list(request):
 def answer(request, feedback_id):
     feedback = Feedback.objects.get(pk=feedback_id)
     if (request.method == 'POST'):
-        feedback.notify = True
         form = FeedbackAnswerForm(request.POST, instance=feedback)
         if form.is_valid():
             form.save()
