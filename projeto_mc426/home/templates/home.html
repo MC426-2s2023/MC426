@@ -1,7 +1,7 @@
 <h1>Home Page</h1>
 
 {% load static %}
-
+{% load webpush_notifications %}
 <!--Redireciona para um feedback geral-->
 
 {% if request.user.is_authenticated %} 
@@ -41,10 +41,14 @@
     <!-- Leaflet Routing Machine - OpenRoute Service -->
     <script src="https://unpkg.com/@gegeweb/leaflet-routing-machine-openroute@latest/dist/leaflet-routing-openroute.js"></script>
 
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ {% webpush_header %}
 </head>
 <body>
+
+    {% webpush_button %}
     <div id="map" style="height: 500px;"></div>
-    
     <script>
         var data = {
             max: 10,
@@ -150,13 +154,55 @@
                 }
         });
 
-        L.Routing.control({
+        var routeCtrl = L.Routing.control({
             router: osrRouter,
             waypoints: [
                 L.latLng(-22.82578415192047, -47.072228935407814),
                 L.latLng(-22.82384289829194, -47.07019292913905)
             ]
         }).addTo(map);
+ 
+
+        let hijack = true
+        function success(position){
+            var lat, lng;
+            if (hijack){
+                var waypts = routeCtrl.getWaypoints();
+                lat = (waypts[0].latLng.lat);
+                lng = (waypts[0].latLng.lng);
+            } else {
+                lat = position.coords.latitude;
+                lng = position.coords.longitude;
+            }
+            var csrf = $(this).attr('csrf');
+            $.ajax({
+                    type: "POST",
+                    url: '/home/update_user_location/',
+                    data: {
+                        "lat": lat,
+                        "lng": lng,
+                    },
+                    headers:{
+                        "X-CSRFToken": '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        //alert("successfull")
+                    },
+                    failure: function () {
+                        //alert("failure");
+                    }
+            });
+            console.log(lat);
+            console.log(lng);
+            // sessionStorage.setItem("user_lat", lat);
+            // sessionStorage.setItem("user_lng", lng);
+        }
+
+        function error(position){
+            console.log(error) 
+        }
+    // options -> high acuracy
+    let id = navigator.geolocation.watchPosition(success, error);
     </script>
 </body>
 </html>

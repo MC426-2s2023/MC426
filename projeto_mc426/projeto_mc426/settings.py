@@ -37,11 +37,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'webpush',
     'auth',
     'home',
     'feedback.apps.FeedbackConfig',
     'register',
 ]
+
+WEBPUSH_SETTINGS = {
+    "VAPID_PUBLIC_KEY": "BMy2a_e85bbLtGoJOQZqNO1LrYujNE4m86_TEGoBPB5HoL4udYVvHFCRvLVr0FYTMlRNwRxwC732s0Zgj9YzOsw",
+    "VAPID_PRIVATE_KEY":"3-YNpdJe2LZoeWJ8GNnD17n2MIwpkfX3YY_65PTFIac",
+    "VAPID_ADMIN_EMAIL": "p247309@dac.unicamp.br"
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
