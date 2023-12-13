@@ -12,7 +12,7 @@ class tipo_de_ocorrencia(models.Model):
 class registro_de_ocorrencia(models.Model):
     rdo_id = models.BigAutoField(primary_key=True)
     rdo_tdo = models.ForeignKey(
-        tipo_de_ocorrencia, on_delete=models.CASCADE
+        tipo_de_ocorrencia, on_delete=models.CASCADE, verbose_name="Tipo de Ocorrência"
     )
     rdo_cep = models.CharField("CEP", max_length=50)
     rdo_rua = models.CharField("Rua", max_length=100)
