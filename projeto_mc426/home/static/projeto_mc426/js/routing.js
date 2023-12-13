@@ -51,7 +51,7 @@ const osrRouter = new L.Routing.OpenRouteService(apikey, {
         }
 });
 
-L.Routing.control({
+var routeCtrl = L.Routing.control({
     router: osrRouter,
     waypoints: [
         L.latLng(-22.82578415192047, -47.072228935407814),
