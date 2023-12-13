@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbid
 from .models import registro_de_ocorrencia
 from webpush import send_user_notification
 from geopy import distance 
+# from django.contrib.auth.models import User
 # Create your views here.
 
 
@@ -14,7 +15,6 @@ def homePage(request):
     context = {
         "data": data
     }
-     
     return render(request, 'home.html', context)
 
     #if request.user.is_authenticated:
@@ -25,6 +25,7 @@ def homePage(request):
 
 
 # @ajax_required
+
 def updateLocation(request):
     # try:
         if request.method == 'POST':

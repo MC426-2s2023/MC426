@@ -58,3 +58,4 @@ var routeCtrl = L.Routing.control({
         L.latLng(-22.82384289829194, -47.07019292913905)
     ]
 }).addTo(map);
+
