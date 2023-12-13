@@ -48,6 +48,15 @@
  {% webpush_header %}
 </head>
 <body>
+    {% if feedback_data %}
+    <p>Feedbacks respondidos:</p>
+    <ul>
+        {% for feedback in feedback_data %}
+            <li><a href="{% url 'feedback:detail' feedback.id%}">{{ feedback.title }}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
 
     {% webpush_button %}
     <div id="map" style="height: 500px;"></div>
