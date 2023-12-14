@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<head>
+    <h1> Lista de feedbacks enviados: </h1>
+</head>
+<body>
+    <ul>
+        {% if list %}
+            {% for feedback in list %}
+            <li><a = href="{% url 'feedback:detail' feedback.id %}">{{ feedback.title }}</a>, enviado em {{feedback.pub_date}} </li>
+            {% endfor %}
+        {% else %}
+            <p> Não há nada aqui...</p>
+        {% endif %}
+    </ul>
+</body>
+{% endblock %}

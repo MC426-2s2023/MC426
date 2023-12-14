@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<head>
+    <p><a href="{% url 'feedback:list'%}"> Voltar à lista de feedbacks</a></p>
+</head>
+<body>
+    <h1>{{ feedback.title }}</h1>
+    <p> Usuário: {{ feedback.user.username }}</p>
+    <p> Enviado em {{ feedback.pub_date }}</p>
+    <p> Descrição: {{ feedback.description }}</p>
+    {% if feedback.answer %}
+        <p> Resposta: {{ feedback.answer }}</p>
+    {% else %}
+        {% if request.user.is_superuser %}
+            <p><a href="{% url 'feedback:answer' feedback.id%}">Enviar resposta</a></p>
+        {% endif %}
+    {% endif %}
+</body>
+{% endblock %}

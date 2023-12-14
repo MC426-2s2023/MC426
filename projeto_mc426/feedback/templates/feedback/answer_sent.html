@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
+<p> Feedback respondido</p>
+<p> <a href="{% url 'feedback:detail' feedback.id%}">Voltar ao feedback respondido</a></p>
+{% endblock %}
