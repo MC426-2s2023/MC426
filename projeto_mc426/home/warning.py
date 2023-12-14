@@ -26,10 +26,10 @@ class Warning:
         }
 
     def warnUser(self, request, userPosition):
-        radius = 30
+        radius = 70
         regProx = crimeRegisterProximity(userPosition[0], userPosition[1], radius)
         if regProx: # existe alguma ocorrencia proxima
-            self.setMsg("Atencao!",  "Existe uma ocorrencia ha {x} metros de voce".format(x = regProx[0][1]))
+            self.setMsg("Atenção!",  "Existe uma ocorrencia ha {:.2f} metros de você".format(regProx[0][1]))
             send_user_notification(user=request.user, payload=self.msg, ttl=1000)
         return
 

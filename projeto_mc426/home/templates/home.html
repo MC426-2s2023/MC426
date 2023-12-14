@@ -43,6 +43,11 @@
     <!-- Leaflet Routing Machine - OpenRoute Service -->
     <script src="https://unpkg.com/@gegeweb/leaflet-routing-machine-openroute@latest/dist/leaflet-routing-openroute.js"></script>
 
+    <!-- Leaflet geocoder -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    
+
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
  {% webpush_header %}
@@ -73,6 +78,5 @@
     <!-- Include js scripts  -->
     <script src="{% static 'projeto_mc426/js/main.js' %}"></script>
     <script src="{% static 'projeto_mc426/js/routing.js' %}"></script>
-    <script src="{% static 'projeto_mc426/js/geolocation.js' %}"></script>
 </body>
 </html>
