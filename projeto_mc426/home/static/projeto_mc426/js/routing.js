@@ -1,6 +1,6 @@
 function getPolygons(crimeData, L){
     var list = [];
-    var dist = 0.0003;
+    var dist = 0.0002;
     var ocurr = crimeData.data;
     for (const i in ocurr){
         var pol = [];
@@ -34,11 +34,15 @@ const osrRouter = new L.Routing.OpenRouteService(apikey, {
         "host": "https://api.openrouteservice.org", // default if not setting
         "service": "directions",                    // default (for routing) 
         "api_version": "v2",                        // default
-        "profiles": {
-            "active": [
-                "car"
-              ],
-        },
+        "profile": "driving-car" ,
+        // "profiles": {
+        //     "active": [
+        //         "car"
+        //       ],
+        //     // "inactive": [
+        //     //     "walking"
+        //     // ]
+        // },
         
         //"driving-car",                  // default
         "routingQueryParams": {
