@@ -49,9 +49,21 @@ class UserAuthenticationTest(TestCase): #testa autenticação
         self.user = forms.User.objects.create_user('testuser', 'test@example.com', 'testpassword')
 
     def test_authenticate_valid_user(self):
+        #Usuário Válido = Sim, Senha Válida = Sim
         logged_in = self.client.login(username='testuser', password='testpassword')
         self.assertTrue(logged_in)
 
-    def test_authenticate_invalid_user(self):
+    def test_authenticate_invalid_username(self):
+        #Usuário Válido = Não, Senha Válida = Sim
+        logged_in = self.client.login(username='wronguser', password='testpassword')
+        self.assertFalse(logged_in)
+
+    def test_authenticate_invalid_password(self):
+        #Usuário Válido = Sim, Senha Válida = Não
         logged_in = self.client.login(username='testuser', password='wrongpassword')
+        self.assertFalse(logged_in)
+
+    def test_authenticate_invalid_username_password(self):
+        #Usuário Válido = Não, Senha Válida = Não
+        logged_in = self.client.login(username='wronguser', password='wrongpassword')
         self.assertFalse(logged_in)
