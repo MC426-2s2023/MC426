@@ -22,4 +22,4 @@ jobs:
       run: docker build -f docker/Dockerfile . -t projeto_mc426
     
     - name: Run Django Tests inside Docker
-      run: docker run projeto_mc426 python manage.py test
+      run: docker run projeto_mc426 python manage.py test -v 2
