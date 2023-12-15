@@ -1,7 +1,9 @@
 from django.test import TestCase
+from django.test.testcases import ValidationError
 from auth import forms
 from parameterized import parameterized
 from .forms import CreateUserForm
+from django.contrib.auth.models import User
 
 class CreateUserFormTest(TestCase):
     @parameterized.expand([
@@ -67,3 +69,32 @@ class UserAuthenticationTest(TestCase): #testa autenticação
         #Usuário Válido = Não, Senha Válida = Não
         logged_in = self.client.login(username='wronguser', password='wrongpassword')
         self.assertFalse(logged_in)
+
+class UserPositionTest(TestCase):
+    def assertNotRaises(self,error, function, *args):
+        try:
+            function(*args)
+            assert True
+        except error:
+            assert False
+
+    def test_user_with_expected_lat_lng(self):
+        user = User.objects.create_user("nome_usuario", "email@a.com", "senha")
+        self.assertNotRaises(ValidationError, user.location_profile.setLatLng, 47, 120)
+
+    def test_user_with_lat_greater_than_90(self):
+        user = User.objects.create_user("nome_usuario", "email@a.com", "senha")
+        self.assertRaises(ValidationError, user.location_profile.setLatLng, 91, 0)
+
+    def test_user_with_lat_less_than_negative_90(self):
+        user = User.objects.create_user("nome_usuario", "email@a.com", "senha")
+        self.assertRaises(ValidationError, user.location_profile.setLatLng, -91, 0)
+
+    def test_user_with_lng_greater_than_180(self):
+        user = User.objects.create_user("nome_usuario", "email@a.com", "senha")
+        self.assertRaises(ValidationError, user.location_profile.setLatLng, 0, 181)
+
+    def test_user_with_lng_greater_than_negative_181(self):
+        user = User.objects.create_user("nome_usuario", "email@a.com", "senha")
+        self.assertRaises(ValidationError, user.location_profile.setLatLng, 0, -181)
+
