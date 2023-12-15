@@ -5,3 +5,4 @@ six
 django-webpush
 geopy
 requests
+parameterized
