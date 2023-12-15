@@ -20,7 +20,7 @@ Nesse contexto, nosso projeto visa a solução de um desses problemas, sendo o p
 
   * Componente de Feedback: Permite que os usuários enviem feedbacks para os desenvolvedores da aplicação. Ele atua como um canal direto entre os usuários e a equipe de desenvolvimento, coletando as respostas no banco de dados.
 
-  * Componente de Registro de Ocorrência: Possibilita que os usuários informem sobre ocorrências de crimes através da aplicação. Esses registros são armazenados no banco de dados e podem incluir informações geográficas para mapeamento.
+  * Componente de Registro de Ocorrência: Possibilita que os usuários informem sobre ocorrências de crimes através da aplicação. Esses registros são armazenados no banco de dados e incluem informações geográficas para mapeamento.
 
   * Componente de Mapas e Rotas: Fornece aos usuários visualizações de mapas de calor da criminalidade e sugere rotas seguras. Utiliza bibliotecas JavaScript externas para apresentação e mapeamento de dados geográficos.
 
