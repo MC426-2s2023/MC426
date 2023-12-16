@@ -104,7 +104,7 @@ class UserFormTest(TestCase):
         #Tamanho logo acima do limite superior
         User = get_user_model()
         wronguser = "Este_usuario_esta_identificado_como_um_usuario_de_151_caracteres_superando_o_valor_o_limite_estabelecido_de_no_maximo_150_._Assim_devemos_ter_um_erro_."
-        user = User.objects.create_user(wronguser, "test@example.com", "testpassword")
+        user = User.objects.create_user(username=wronguser, email="test@example.com", password1="testpassword")
         form = CreateUserForm(instance=user)
         self.assertFalse(form.is_valid())
     
@@ -112,7 +112,7 @@ class UserFormTest(TestCase):
         #Testa limite superior do tamanho do usuario
         User = get_user_model()
         correctuser = "Este_usuario_esta_identificado_como_um_usuario_de_150_caracteres_igualando_o_valor_o_limite_estabelecido_._Assim_nao_devemos_ter_um_erro_no_registro_."
-        user = User.objects.create_user(correctuser, "test@example.com", "testpassword")
+        user = User.objects.create_user(username=correctuser, email="test@example.com", password1="testpassword")
         form = CreateUserForm(instance=user)
         self.assertTrue(form.is_valid())
     
@@ -120,7 +120,7 @@ class UserFormTest(TestCase):
         #Testa limite inferior do tamanho do usuario
         User = get_user_model()
         correctuser = "."
-        user = User.objects.create_user(correctuser, "test@example.com", "testpassword")
+        user = User.objects.create_user(username=correctuser, email="test@example.com", password1="testpassword")
         form = CreateUserForm(instance=user)
         self.assertTrue(form.is_valid())
     
@@ -128,7 +128,7 @@ class UserFormTest(TestCase):
         #Tamanho logo abaixo do limite inferior
         User = get_user_model()
         wronguser = ""
-        user = User.objects.create_user(wronguser, "test@example.com", "testpassword")
+        user = User.objects.create_user(username=wronguser, email="test@example.com", password1="testpassword")
         form = CreateUserForm(instance=user)
         self.assertFalse(form.is_valid())
 
@@ -138,38 +138,38 @@ class PasswordTest(TestCase):
         #Testa se a senha está da forma correta
         User = get_user_model()
         correctpassword = "mc426txt"
-        user = User.objects.create_user(username='testuser', password=correctpassword)
+        user = User.objects.create_user(username='testuser', password1=correctpassword)
         form = CreateUserForm(instance=user)
         self.assertTrue(form.is_valid())
         
     def test_password_similar_to_informations(self):
-        #Senha é parecida com o restante das informações
+        #Testa se a senha é parecida com o restante das informações
         User = get_user_model()
         wrongpassword = "victorhonorio"
-        user = User.objects.create_user("victorhonorio", "email@a.com", "nome_inicial", "nome_final", password=wrongpassword)
+        user = User.objects.create_user(username="victorhonorio", email="email@a.com", password1=wrongpassword)
         form = CreateUserForm(instance=user)
         self.assertFalse(form.is_valid())
-        
+
     def test_password_with_7_characters(self):
-        #Tamanho da senha logo abaixo do limite inferior
+        #Testa limite inferior do tamanho da senha
         User = get_user_model()
         wrongpassword = "menorq8"
-        user = User.objects.create_user("nome_usuario", "email@a.com", "nome_inicial", "nome_final", password=wrongpassword, )
+        user = User.objects.create_user(username="nome_usuario", email="email@a.com", password1=wrongpassword, )
         form = CreateUserForm(instance=user)
         self.assertFalse(form.is_valid())
     
     def test_password_ordinary(self):
-        #Senha é muito comum
+        #Testa se a senha é muito comum
         User = get_user_model()
         wrongpassword = "a1234567"
-        user = User.objects.create_user("nome_usuario", "email@a.com", "nome_inicial", "nome_final", password=wrongpassword)
+        user = User.objects.create_user(username="nome_usuario", email="email@a.com", password1=wrongpassword)
         form = CreateUserForm(instance=user)
         self.assertFalse(form.is_valid())
         
     def test_password_with_only_numbers(self):
-        #Senha é inteiramente numérica
+        #Testa se a senha é inteiramente numérica
         User = get_user_model()
         wrongpassword = "314159265"
-        user = User.objects.create_user("nome_usuario", "email@a.com", "nome_inicial", "nome_final", password=wrongpassword)
+        user = User.objects.create_user(username="nome_usuario", email="email@a.com", password1=wrongpassword)
         form = CreateUserForm(instance=user)
         self.assertFalse(form.is_valid())
