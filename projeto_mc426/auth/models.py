@@ -2,8 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.test.testcases import ValidationError
 from home.warning import Warning
-
+from django.core.validators import MaxValueValidator, MinValueValidator
+from decimal import Decimal
 
 # OneToOne link para usuario padrao do Django
 class LocationProfile(models.Model):
@@ -15,11 +17,24 @@ class LocationProfile(models.Model):
     def subscribe(self, newSub):
         self.subs.append(newSub)
 
+    def setLatLng(self,lat, lng):
+        if self.is_position_valid(lat,lng):
+            self.lat = lat
+            self.lng = lng
+        else:
+            raise ValidationError("Invalid Position")
+
+
+    def is_position_valid(self, lat, lng):
+        if (lat < -90 or lat>90) or (lng < -180 or lng > 180):
+            return False
+        return True
+
     def updateUserLocation(self, request, lat, lng):
         if self.user_lat == lat and self.user_lng == lng: # posicao nao foi alterada
             return
 
-        self.user_lat, self.user_lng = lat,lng
+        self.setLatLng(lat, lng)
         self.save(update_fields=['user_lat', 'user_lng'])
 
         for subscriber in self.subs:
